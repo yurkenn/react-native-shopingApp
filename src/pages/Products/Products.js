@@ -1,27 +1,31 @@
-import {View, FlatList, Text} from 'react-native';
-import React, {useState, useEffect} from 'react';
+import {FlatList} from 'react-native';
+import React from 'react';
 import Config from 'react-native-config';
-import axios from 'axios';
 import ProductCard from '../../components/ProductCard';
+import useFetch from '../../hooks/useFetch';
+import Loading from '../../components/Loading';
+import Error from '../../components/Error';
 
-const Products = () => {
-  const [data, setData] = useState([]);
+const Products = ({navigation}) => {
+  const {loading, error, data} = useFetch(Config.API_URL);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  if (loading) {
+    return <Loading />;
+  }
 
-  const fetchData = async () => {
-    const {data: productData} = await axios.get(Config.API_URL);
-    setData(productData);
+  if (error) {
+    return <Error />;
+  }
+
+  const handleProductSelect = id => {
+    navigation.navigate('DetailPage', {id});
   };
 
-  const renderProduct = ({item}) => <ProductCard product={item} />;
-  return (
-    <View>
-      <FlatList data={data} renderItem={renderProduct} />
-    </View>
+  const renderProduct = ({item}) => (
+    <ProductCard product={item} onSelect={() => handleProductSelect(item.id)} />
   );
+
+  return <FlatList data={data} renderItem={renderProduct} />;
 };
 
 export default Products;
