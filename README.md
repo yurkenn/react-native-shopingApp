@@ -36,9 +36,11 @@ Clone this repository on your local machine.
 To use it after cloning the project:
 <br>
 `cd react-native-shopingApp`
+<br>
 `code .`
 <br>
 Run the following commands in the project folder to install the project dependencies.
+<br>
 `npm init`
 <br>
 `npm install`
